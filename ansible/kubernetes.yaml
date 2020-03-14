@@ -1,0 +1,14 @@
+# - hosts: kube
+#   become: true
+#   roles:
+#     - ansible-role-docker
+
+- hosts: master
+  become: true
+  roles:
+    - ansible-role-kubernetes
+
+- hosts: nodes
+  become: true
+  roles:
+    - ansible-role-kubernetes
