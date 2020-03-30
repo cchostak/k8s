@@ -1,0 +1,1 @@
+kubectl expose deployment kubeserve2 --port 80 --target-port 8080 --type LoadBalancer
