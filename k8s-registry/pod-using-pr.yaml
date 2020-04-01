@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: acr-pod
+  labels:
+    app: busybox
+spec:
+  containers:
+    - name: busybox
+      image: podofminerva.azurecr.io/busybox:latest
+      command: ['sh', '-c', 'echo Hello Kubernetes! && sleep 3600']
+      imagePullPolicy: Always

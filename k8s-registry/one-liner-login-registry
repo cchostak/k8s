@@ -1,0 +1,3 @@
+kubectl create secret docker-registry acr --docker-server=https://podofminerva.azurecr.io --docker-username=podofminerva --docker-password='otj701c9OucKZOCx5qrRblofcNRf3W+e' --docker-email=user@example.com
+
+kubectl patch sa default -p '{"imagePullSecrets": [{"name": "acr"}]}'
