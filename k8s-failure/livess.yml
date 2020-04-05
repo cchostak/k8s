@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: liveness
+spec:
+  containers:
+  - image: linuxacademycontent/candy-service:2
+    name: kubeserve
+    livenessProbe:
+      httpGet:
+        path: /healthz
+        port: 8081

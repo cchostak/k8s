@@ -1,0 +1,1 @@
+kubectl get po pod-with-defaults -o yaml --export > defaults-pod.yaml

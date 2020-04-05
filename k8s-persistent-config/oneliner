@@ -1,0 +1,8 @@
+kubectl get secrets
+kubectl describe pods pod-with-defaults
+kubectl describe secret
+openssl genrsa -out https.key 2048
+openssl req -new -x509 -key https.key -out https.cert -days 3650 -subj /CN=www.example.com
+touch file
+kubectl create secret generic example-https --from-file=https.key --from-file=https.cert --from-file=file
+kubectl get secrets example-https -o yaml
