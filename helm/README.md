@@ -34,8 +34,90 @@ kubectl get pods -n rook-ceph -w
 
 kubectl create -f storageclass.yaml
 
+```
+
+## Install helm on MAC
+```sh
 brew install helm
 helm repo update
 ```
 
-helm 3.x.x doesn-t usa tiller anymore
+## Install on Linux
+```sh
+kubectl get nodes
+curl https://storage.googleapis.com/kubernetes-helm/helm-v2.12.3-linux-amd64.tar.gz > ./helm.tar.gz
+tar -xvf ./helm.tar.gz
+cd linux-amd64
+sudo mv ./helm /usr/local/bin
+sudo mv ./tiller  /usr/local/bin
+cd
+helm version
+helm init
+kubectl create serviceaccount --namespace kube-system tiller
+kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
+kubectl patch deploy --namespace kube-system tiller-deploy -p'{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}'
+kubectl get pods -n kube-system
+helm install ./nginx/
+curl 10.106.145.215:8888
+helm ls --short
+helm delete $(helm ls --short)
+helm ls
+kubectl get pods
+```
+
+### helm 3.x.x doesn-t usa tiller anymore
+
+# Creating and pulling charts
+
+```sh
+helm create <CHART NAME> 
+helm install <CHART NAME> #Will install the boilerplate nginx
+helm fetch --untar stable/jenkins #Downloads the chart in .tgz
+```
+
+# Charts explained
+
+```sh
+wordpress/
+  Chart.yaml          # A YAML file containing information about the chart
+  LICENSE             # OPTIONAL: A plain text file containing the license for the chart
+  README.md           # OPTIONAL: A human-readable README file
+  values.yaml         # The default configuration values for this chart
+  values.schema.json  # OPTIONAL: A JSON Schema for imposing a structure on the values.yaml file
+  charts/             # A directory containing any charts upon which this chart depends.
+  crds/               # Custom Resource Definitions
+  templates/          # A directory of templates that, when combined with values,
+                      # will generate valid Kubernetes manifest files.
+  templates/NOTES.txt # OPTIONAL: A plain text file containing short usage notes
+```
+
+Helm reserves use of the charts/, crds/, and templates/ directories, and of the listed file names. Other files will be left as they are.
+
+# Helm completion
+
+helm completion zsh >> ~/.zshrc
+
+# Generating a custom values file 
+
+This is useful when applying the same Chart to multiple environments.
+
+```sh
+grep -v '#' values.yaml > custom.yaml
+helm install --values=./custom.yaml stable/wordpress --generate-name
+```
+
+# Set up a local chart repository directory
+
+```sh
+helm fetch --untar stable/jenkins #Downloads the chart in .tgz and extract it
+```
+
+Change the contents of the Chart as you wish.
+
+```sh
+helm package <FOLDER>
+helm repo index .
+helm repo add <A NAME> <URL POINTING TO THE PUBLIC FOLDER WHERE THE INDEX IS LOCATED>
+helm search <YOUR CHART>
+```
+
