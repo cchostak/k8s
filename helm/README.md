@@ -121,3 +121,21 @@ helm repo add <A NAME> <URL POINTING TO THE PUBLIC FOLDER WHERE THE INDEX IS LOC
 helm search <YOUR CHART>
 ```
 
+# Releases
+
+```sh
+helm fetch --untar stable/jenkins #Downloads the chart in .tgz and extract it
+```
+
+Change the contents of the Chart as you wish. Upgrade Version
+
+```sh
+helm package <FOLDER>
+helm repo index .
+helm repo add <A NAME> <URL POINTING TO THE PUBLIC FOLDER WHERE THE INDEX IS LOCATED>
+helm repo update
+helm search <YOUR CHART>
+helm install --version=5.2.2 <repp>/<package>
+
+```
+
