@@ -137,5 +137,11 @@ helm repo update
 helm search <YOUR CHART>
 helm install --version=5.2.2 <repp>/<package>
 
+kubectl get sts # Stateful Set, this is destructive
+kubectl delete sts <name of the stateful set>
+helm ls --short
+helm upgrade --recreate-pods <name of the release from above> <repo>/<package> 
+helm history <release name>
+helm rollback <release name> <revision number>
 ```
 
